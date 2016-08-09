@@ -24,6 +24,9 @@ var Page = db.define('page', {
     date: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
+    },
+    tags: {
+        type: Sequelize.ARRAY(Sequelize.STRING) 
     }
 },
     { getterMethods: {
@@ -37,6 +40,17 @@ var Page = db.define('page', {
          }
      }
 });
+
+Page.findByTags = function(tags) {
+    return Page.find({
+    // $overlap matches a set of possibilities
+    where : {
+        tags: {
+            $overlap: tags.split(' ')
+        }
+    }    
+});
+}
 
 var User = db.define('user', {
     name: {

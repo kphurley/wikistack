@@ -1,11 +1,14 @@
 {% extends "layout.html" %}
 
 {% block content %}
+  <h2>{{user.name}}</h2>
+  <h4>{{user.email}}</h4>
+  <br>
   <h3>Pages</h3>
   <hr>
   <ul class="list-unstyled">
     {% for page in pages %}
-        <li><a href="/wiki/{{page.urlTitle}}">{{page.title}}</a></li>
+        <li><a href="{{page.get('route')}}">{{page.get('title')}}</a></li>
     {% endfor %}
   </ul>
 {% endblock %}

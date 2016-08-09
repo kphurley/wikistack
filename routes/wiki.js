@@ -32,7 +32,8 @@ router.post('/', function(req, res, next) {
         var page = Page.build({
             title: req.body.title,
             content: req.body.content,
-            status: req.body.status
+            status: req.body.status,
+            tags: req.body.tags.split(' ')
         });
         
         return page.save().then(function(page) {
@@ -56,7 +57,19 @@ router.get('/:page', function(req, res, next) {
         {urlTitle: req.params.page}
        })
    .then(function(page) {
-       res.render('wikipage', {page: page[0].dataValues});
+       User.findAll(
+       {where: 
+        {id: page[0].dataValues.authorId}}
+       )
+       .then(function(user) {
+           if(!page || !user) {
+              res.status(404).send(); 
+           }
+           else{
+              res.render('wikipage', {page: page[0].dataValues, user: user[0].dataValues});
+           }
+       });
+       
    });
 });
 

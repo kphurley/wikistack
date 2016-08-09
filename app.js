@@ -10,6 +10,8 @@ var Page = models.Page;
 var User = models.User;
 
 var wikiRoutes = require('./routes/wiki');
+var userRoutes = require('./routes/users');
+var searchRoutes = require('./routes/search');
 
 var bodyParser = require('body-parser');
 // create application/json parser
@@ -19,9 +21,9 @@ var urlencodedParser = bodyParser.urlencoded({
     extended: false
 });
 
-User.sync({force: true})
+User.sync()
  .then(function() {
-   return Page.sync({force: true});  
+   return Page.sync();  
 })
  .then(function(){
     app.listen(3000)
@@ -45,6 +47,8 @@ app.use(jsonParser);
 app.use(urlencodedParser);
 
 app.use('/wiki', wikiRoutes);
+app.use('/users', userRoutes);
+app.use('/search', searchRoutes);
 
 
 
